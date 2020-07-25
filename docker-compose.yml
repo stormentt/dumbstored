@@ -1,0 +1,18 @@
+version: '3'
+
+services:
+  db:
+    image: postgres:10
+    environment:
+      POSTGRES_USER: dumbstored
+      POSTGRES_PASSWORD: dumbstored
+      POSTGRES_DATABASE: dumbstored
+  dumbstored:
+    image: dumbstored
+    restart: always
+    environment:
+      DUMBSTORED_PORT: 8080
+    depends_on: 
+      - db
+    ports:
+      - 8080:8080

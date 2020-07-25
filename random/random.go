@@ -1,17 +1,17 @@
 package random
 
 import (
-  "crypto/rand"
-  "math/big"
+	"crypto/rand"
+	"math/big"
 )
 
 func Salt() string {
-  return alphaNum(16)
+	return AlphaNum(16)
 }
 
 func Int(max uint64) uint64 {
 	bigMax := big.NewInt(0)
-  bigMax.SetUint64(max)
+	bigMax.SetUint64(max)
 	randInt, err := rand.Int(rand.Reader, bigMax)
 	if err != nil {
 		panic(err)
@@ -19,7 +19,7 @@ func Int(max uint64) uint64 {
 	return randInt.Uint64()
 }
 
-func alphaNum(length int) string {
+func AlphaNum(length int) string {
 	alphanumeric := "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
 	alphaLen := uint64(len(alphanumeric))
 
