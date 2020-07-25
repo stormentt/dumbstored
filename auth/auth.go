@@ -11,20 +11,6 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-type Dummy struct {
-	Password string
-	Salt     string
-	Hash     string
-}
-
-var dummy Dummy
-
-func GenerateDummy() {
-	dummy.Password = random.AlphaNum(16)
-
-	dummy.Salt, dummy.Hash = HashPassword(dummy.Password)
-}
-
 func DecodeHeader(authHeader string) (string, string, bool) {
 	if len(authHeader) == 0 {
 		return "", "", false
@@ -83,8 +69,4 @@ func CheckPassword(pw, hash, salt string) bool {
 	}
 
 	return true
-}
-
-func DummyCheckPassword() {
-	CheckPassword(dummy.Password, dummy.Hash, dummy.Salt)
 }

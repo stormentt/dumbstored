@@ -5,7 +5,6 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/stormentt/dumbstored/api"
-	"github.com/stormentt/dumbstored/auth"
 	"github.com/stormentt/dumbstored/config"
 	"github.com/stormentt/dumbstored/db"
 )
@@ -29,8 +28,6 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-
-	auth.GenerateDummy()
 
 	r := gin.Default()
 	r.POST("/register", api.Register)
