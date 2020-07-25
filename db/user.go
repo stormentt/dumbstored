@@ -9,13 +9,13 @@ import (
 )
 
 type User struct {
-	ID       uint64
+	ID       int
 	Username string
 	Salt     string
 	Password string
 }
 
-func (u *User) String() string {
+func (u User) String() string {
 	return fmt.Sprintf("User<%d, %s>", u.ID, u.Username)
 }
 
@@ -62,11 +62,10 @@ func GetUserByName(username string) (User, bool, error) {
 		return User{}, false, err
 	}
 
-	fmt.Println("GetUserByName: returning user & true")
 	return u, true, nil
 }
 
-func GetUserByID(id uint64) (User, bool, error) {
+func GetUserByID(id int) (User, bool, error) {
 	u := User{}
 	row := db.QueryRow(context.Background(), "SELECT * FROM users WHERE id=$1", id)
 
@@ -84,4 +83,16 @@ func GetUserByID(id uint64) (User, bool, error) {
 	}
 
 	return u, true, nil
+}
+
+func ChangeUserPassword(id int, newPw string) error {
+	hash, salt := auth.HashPassword(newPw)
+
+	_, err := db.Exec(context.Background(),
+		"UPDATE users SET salt = $1, password = $2 WHERE id = $3",
+		salt,
+		hash,
+		id)
+
+	return err
 }

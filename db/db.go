@@ -13,15 +13,3 @@ func Connect(conStr string) (err error) {
 
 	return
 }
-
-func Migrate() error {
-	_, err := db.Exec(context.Background(),
-		`CREATE TABLE IF NOT EXISTS users(
-		id SERIAL PRIMARY KEY, 
-		username VARCHAR NOT NULL,
-		salt VARCHAR NOT NULL,
-		password VARCHAR NOT NULL
-	);`)
-
-	return err
-}

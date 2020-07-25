@@ -7,6 +7,7 @@ import (
 	"github.com/stormentt/dumbstored/api"
 	"github.com/stormentt/dumbstored/config"
 	"github.com/stormentt/dumbstored/db"
+	"github.com/stormentt/dumbstored/middleware"
 )
 
 func main() {
@@ -31,7 +32,13 @@ func main() {
 
 	r := gin.Default()
 	r.POST("/register", api.Register)
-	r.GET("/check", api.Check)
+	authRoutes := r.Group("/", middleware.Auth)
+	{
+		authRoutes.GET("/check", api.Check)
+		authRoutes.POST("/change-pw", api.ChangePassword)
+		authRoutes.POST("/store", api.StartTransfer)
+		authRoutes.POST("/store/:id", api.ContinueTransfer)
+	}
 
 	httpStr := fmt.Sprintf(":%v", config.C.Port)
 	fmt.Println(httpStr)
