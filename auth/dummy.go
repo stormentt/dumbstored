@@ -23,7 +23,7 @@ var dummy Dummy
 func init() {
 	dummy.Password = random.AlphaNum(16)
 
-	dummy.Salt, dummy.Hash = HashPassword(dummy.Password)
+	dummy.Hash, dummy.Salt = HashPassword(dummy.Password)
 
 	fmt.Printf("Initialized %s\n", dummy)
 }

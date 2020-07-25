@@ -57,7 +57,7 @@ func HashPassword(pw string) (string, string) {
 
 	pwhash, _ := bcrypt.GenerateFromPassword([]byte(prehash), config.C.BcryptFactor)
 
-	return salt, string(pwhash)
+	return string(pwhash), salt
 }
 
 func CheckPassword(pw, hash, salt string) bool {

@@ -30,7 +30,7 @@ func CreateUser(username, password string) (bool, error) {
 		return false, nil
 	}
 
-	salt, hash := auth.HashPassword(password)
+	hash, salt := auth.HashPassword(password)
 	_, err = db.Exec(context.Background(),
 		"INSERT INTO users(username, salt, password) VALUES($1, $2, $3);",
 		username,
