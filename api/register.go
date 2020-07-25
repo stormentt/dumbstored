@@ -5,10 +5,16 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/stormentt/dumbstored/auth"
+	"github.com/stormentt/dumbstored/config"
 	"github.com/stormentt/dumbstored/db"
 )
 
 func Register(c *gin.Context) {
+	if !config.C.AllowRegistration {
+		c.String(403, "registration disabled")
+		return
+	}
+
 	username, password, ok := auth.DecodeHeader(c.GetHeader("Authorization"))
 	if !ok {
 		c.String(400, "bad Authorization header format")
