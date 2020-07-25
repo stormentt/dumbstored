@@ -17,6 +17,9 @@ type configDef struct {
 	PostgresPass string `split_words:"true" default:"dumbstored"`
 
 	BcryptFactor int `split_words:"true" default:"12"`
+
+	BlobStoragePath string `split_words:"true" default:"/var/dumbstored/data"`
+	TempStoragePath string `split_words:"true" default:"/var/dumbstored/tmp"`
 }
 
 var C configDef
