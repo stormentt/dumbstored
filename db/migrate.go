@@ -20,7 +20,6 @@ func Migrate() error {
 		owner INTEGER,
 		size BIGINT,
 		final_size BIGINT,
-		path VARCHAR,
 		status VARCHAR,
 		expires TIMESTAMP WITH TIME ZONE
 		);`)

@@ -4,6 +4,8 @@ import (
 	"context"
 	"fmt"
 	"time"
+
+	"github.com/jackc/pgx/v4"
 )
 
 type Transfer struct {
@@ -35,4 +37,31 @@ func CreateTransfer(owner int, finalSize int64) (int, error) {
 	err := row.Scan(&id)
 
 	return id, err
+}
+
+func GetTransferByID(id int, owner int) (Transfer, bool, error) {
+	row := db.QueryRow(context.Background(),
+		`SELECT * FROM transfers WHERE id = $1 and owner = $2`,
+		id,
+		owner)
+
+	t := Transfer{}
+	err := row.Scan(
+		&t.ID,
+		&t.Owner,
+		&t.Size,
+		&t.FinalSize,
+		&t.Status,
+		&t.Expires,
+	)
+
+	if err != nil {
+		if err == pgx.ErrNoRows {
+			return Transfer{}, false, nil
+		}
+
+		return Transfer{}, false, err
+	}
+
+	return t, true, nil
 }

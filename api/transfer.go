@@ -1,6 +1,7 @@
 package api
 
 import (
+	"log"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
@@ -42,9 +43,20 @@ func ContinueTransfer(c *gin.Context) {
 		return
 	}
 
-	rstruct := struct {
-		TransferID int
-	}{int(transfer_id)}
+	log.Printf("transfer_id: %d", transfer_id)
+	user_id := c.GetInt("user_id")
 
-	c.JSON(200, rstruct)
+	transfer, ok, err := db.GetTransferByID(int(transfer_id), user_id)
+	if err != nil {
+		log.Printf("error fetching transfer: %s", err)
+		c.String(500, "internal server error")
+		return
+	}
+
+	if !ok {
+		c.String(404, "transfer not found or no access")
+		return
+	}
+
+	c.String(200, "%s", transfer)
 }
